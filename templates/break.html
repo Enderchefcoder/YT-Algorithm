@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Break Time – YT-Safe{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/break.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="break-screen">
+  <div class="break-screen__card">
+
+    <div class="break-screen__icon" aria-hidden="true">🛡️</div>
+    <h1 class="break-screen__heading">Time for a break!</h1>
+
+    {% if reason %}
+      <p class="break-screen__reason">{{ reason }}</p>
+    {% endif %}
+
+    <p class="break-screen__subtitle">
+      Taking regular breaks keeps your eyes and mind healthy.
+    </p>
+
+    <div class="break-timer" aria-live="polite" aria-label="Break countdown">
+      <span id="breakMinutes">--</span>:<span id="breakSeconds">--</span>
+    </div>
+
+    <div class="break-progress-wrap">
+      <div class="break-progress-bar" id="breakProgressBar"></div>
+    </div>
+
+    <p class="break-screen__tip" id="breakTip">
+      Try stretching, getting a glass of water, or looking out a window! 🌿
+    </p>
+
+    <button
+      class="break-screen__done-btn"
+      id="breakDoneBtn"
+      disabled
+      aria-disabled="true"
+    >
+      Continue watching
+    </button>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  window.BREAK_SECONDS = {{ seconds }};
+</script>
+<script src="{{ url_for('static', filename='js/break.js') }}"></script>
+{% endblock %}

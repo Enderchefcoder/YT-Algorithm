@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}{{ video.title }} – YT-Safe{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="watch-layout">
+
+  <!-- Player column -->
+  <section class="watch-player-col">
+
+    <!-- Custom video player -->
+    <div class="player-container" id="playerContainer">
+      <video
+        id="mainVideo"
+        class="player-video"
+        preload="metadata"
+        playsinline
+        src="{{ video.stream_url }}"
+        poster="{{ video.thumbnail }}"
+      ></video>
+
+      <!-- Custom controls overlay -->
+      <div class="player-controls" id="playerControls">
+        <div class="player-controls__top">
+          <span class="player-controls__title">{{ video.title }}</span>
+        </div>
+
+        <div class="player-controls__center">
+          <button class="player-btn" id="rewindBtn" aria-label="Rewind 10 seconds">⏪</button>
+          <button class="player-btn player-btn--play" id="playPauseBtn" aria-label="Play/Pause">▶</button>
+          <button class="player-btn" id="forwardBtn" aria-label="Forward 10 seconds">⏩</button>
+        </div>
+
+        <div class="player-controls__bottom">
+          <div class="player-progress" id="progressBar" role="slider"
+               aria-label="Video progress" aria-valuemin="0" aria-valuemax="100">
+            <div class="player-progress__fill" id="progressFill"></div>
+            <div class="player-progress__thumb" id="progressThumb"></div>
+          </div>
+
+          <div class="player-controls__row">
+            <span class="player-time" id="playerTime">0:00 / 0:00</span>
+            <div class="player-controls__right">
+              <button class="player-btn" id="muteBtn" aria-label="Mute">🔊</button>
+              <input type="range" class="player-volume" id="volumeSlider"
+                     min="0" max="1" step="0.05" value="1" aria-label="Volume"/>
+              <button class="player-btn" id="fullscreenBtn" aria-label="Fullscreen">⛶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Break overlay (shown when break_pending) -->
+      {% if break_pending %}
+      <div class="break-overlay" id="breakOverlay">
+        <div class="break-overlay__box">
+          <h2>⏸ Time for a break!</h2>
+          <p>{{ break_reason }}</p>
+          <p>Your break will begin when this video ends.</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Like / Dislike -->
+    <div class="watch-actions">
+      <button class="action-btn" id="likeBtn" aria-label="Like" aria-pressed="false">
+        👍 <span id="likeCount">{{ "{:,}".format(video.like_count) }}</span>
+      </button>
+      <button class="action-btn" id="dislikeBtn" aria-label="Dislike" aria-pressed="false">
+        👎
+      </button>
+    </div>
+
+    <!-- Video info -->
+    <div class="watch-info">
+      <h1 class="watch-title">{{ video.title }}</h1>
+      <p class="watch-uploader">{{ video.uploader }}</p>
+      {% if video.hashtags %}
+      <div class="watch-tags">
+        {% for tag in video.hashtags[:8] %}
+          <a href="/search?q={{ tag }}" class="watch-tag">#{{ tag }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <p class="watch-description">{{ video.description }}</p>
+    </div>
+
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Data passed from Flask to player.js
+  window.YT_SAFE = {
+    videoId:       "{{ video.video_id }}",
+    videoTitle:    {{ video.title | tojson }},
+    videoHashtags: {{ video.hashtags_pipe | tojson }},
+    videoDuration: {{ video.duration }},
+    breakPending:  {{ 'true' if break_pending else 'false' }},
+    breakSeconds:  {{ break_seconds }},
+  };
+</script>
+<script src="{{ url_for('static', filename='js/player.js') }}"></script>
+{% endblock %}

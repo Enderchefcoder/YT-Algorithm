@@ -1,0 +1,32 @@
+<header class="navbar">
+  <div class="navbar__left">
+    <button class="navbar__hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="/" class="navbar__logo">
+      <!-- Simple shield + play icon in CSS -->
+      <span class="navbar__logo-icon" aria-hidden="true">▶</span>
+      <span class="navbar__logo-text">YT<span class="navbar__logo-safe">Safe</span></span>
+    </a>
+  </div>
+
+  <form class="navbar__search" action="/search" method="get" role="search">
+    <input
+      type="search"
+      name="q"
+      class="navbar__search-input"
+      placeholder="Search"
+      aria-label="Search videos"
+      value="{{ request.args.get('q', '') }}"
+    />
+    <button type="submit" class="navbar__search-btn" aria-label="Submit search">
+      🔍
+    </button>
+  </form>
+
+  <nav class="navbar__right">
+    <a href="/parent" class="navbar__icon-btn" title="Parental Controls">
+      🛡️
+    </a>
+  </nav>
+</header>

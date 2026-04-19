@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Parental Controls – YT-Safe{% endblock %}
+
+{% block content %}
+<div class="parent-layout">
+  <h1 class="parent-heading">🛡️ Parental Dashboard</h1>
+
+  <section class="parent-card">
+    <h2>Session Stats Today</h2>
+    <dl class="stats-list">
+      <dt>Total watch time</dt>
+      <dd>{{ summary.total_watch_minutes }} min</dd>
+
+      <dt>Low-attention watch time</dt>
+      <dd>{{ summary.low_attention_minutes }} min</dd>
+
+      <dt>Stats last reset</dt>
+      <dd>{{ summary.last_reset }}</dd>
+    </dl>
+  </section>
+
+  <section class="parent-card">
+    <h2>Break Length Override</h2>
+    <p>
+      Default breaks scale from 3 to 10 minutes based on the time of day.
+      You can override this with a fixed length below.
+    </p>
+
+    <form action="/parent/set_break" method="post" class="parent-form">
+      <fieldset class="parent-presets">
+        <legend>Preset durations</legend>
+        {% for preset in presets %}
+          <button type="submit" name="seconds" value="{{ preset }}" class="preset-btn">
+            {{ (preset // 60) }} min
+          </button>
+        {% endfor %}
+        <button type="submit" name="seconds" value="" class="preset-btn preset-btn--reset">
+          Use default
+        </button>
+      </fieldset>
+    </form>
+  </section>
+</div>
+{% endblock %}

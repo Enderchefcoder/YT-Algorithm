@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ query }} – Search – YT-Safe{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="search-layout">
+  <h2 class="search-heading">
+    Results for <em>{{ query }}</em>
+  </h2>
+
+  <div class="search-filters">
+    <span class="search-filters__label">Filter:</span>
+    <a href="?q={{ query }}&sort=relevance" class="search-filter-btn">Relevance</a>
+    <a href="?q={{ query }}&sort=date"      class="search-filter-btn">Date</a>
+    <a href="?q={{ query }}&sort=views"     class="search-filter-btn">Views</a>
+  </div>
+
+  <section class="feed-grid" aria-label="Search results">
+    {% if videos %}
+      {% for video in videos %}
+        {% with video=video %}
+          {% include "components/video_card.html" %}
+        {% endwith %}
+      {% endfor %}
+    {% else %}
+      <p class="feed-empty">No results for <strong>{{ query }}</strong>.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
