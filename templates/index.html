@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Home – YT-Safe{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="feed-layout">
+  <section class="feed-grid" id="feedGrid" aria-label="Video feed">
+    {% if videos %}
+      {% for video in videos %}
+        {% with video=video %}
+          {% include "components/video_card.html" %}
+        {% endwith %}
+      {% endfor %}
+    {% else %}
+      <p class="feed-empty">No videos found. Try searching for something!</p>
+    {% endif %}
+  </section>
+
+  <div class="feed-loader" id="feedLoader" aria-hidden="true">
+    <div class="spinner"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{{ url_for('static', filename='js/feed.js') }}"></script>
+{% endblock %}

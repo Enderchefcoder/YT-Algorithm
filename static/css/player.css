@@ -1,0 +1,206 @@
+/* =========================================================
+   Video Player
+   ========================================================= */
+
+.watch-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+/* --- Player Container --- */
+.player-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: var(--radius);
+  overflow: hidden;
+  user-select: none;
+}
+
+.player-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* --- Controls Overlay --- */
+.player-controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.6) 0%,
+    transparent 25%,
+    transparent 65%,
+    rgba(0,0,0,0.8) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.player-container:hover .player-controls,
+.player-container.controls-visible .player-controls { opacity: 1; }
+
+.player-controls__title {
+  font-size: 0.9rem;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+
+.player-controls__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.player-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.player-btn:hover { background: rgba(255,255,255,0.15); }
+.player-btn--play { font-size: 2rem; }
+
+/* --- Progress Bar --- */
+.player-progress {
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: height 0.1s;
+}
+.player-progress:hover { height: 6px; }
+.player-progress__fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.25s linear;
+  pointer-events: none;
+}
+.player-progress__thumb {
+  position: absolute;
+  top: 50%; right: 0;
+  transform: translate(50%, -50%);
+  width: 12px; height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+.player-progress:hover .player-progress__thumb { opacity: 1; }
+
+.player-controls__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.player-controls__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-time {
+  font-size: 0.8rem;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.player-volume {
+  width: 80px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* --- Break Overlay --- */
+.break-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.break-overlay__box {
+  text-align: center;
+  color: #fff;
+  padding: 24px;
+}
+.break-overlay__box h2 { font-size: 1.5rem; margin-bottom: 8px; }
+.break-overlay__box p  { color: #ccc; font-size: 0.95rem; }
+
+/* --- Watch Info --- */
+.watch-actions {
+  display: flex;
+  gap: 12px;
+  margin: 14px 0 4px;
+}
+.action-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.action-btn:hover, .action-btn[aria-pressed="true"] {
+  background: var(--bg-hover);
+  border-color: var(--accent-alt);
+}
+
+.watch-info { padding: 4px 0 24px; }
+.watch-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.watch-uploader { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px; }
+.watch-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.watch-tag {
+  font-size: 0.82rem;
+  color: var(--accent-alt);
+  background: rgba(62,166,255,0.1);
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+.watch-description {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
